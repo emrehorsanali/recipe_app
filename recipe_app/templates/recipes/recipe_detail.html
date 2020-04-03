@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Recipe{% endblock title %}
+
+{% block content %}
+ <!-- Page Content -->
+   <div class="container">
+
+    <div class="row">
+
+      <!-- Post Content Column -->
+      <div class="col-lg-8">
+
+        <!-- Title -->
+        <h1 class="mt-4">{{ recipe.name }}</h1>
+
+        <!-- Author -->
+        <p class="lead">
+          by
+          <a>{{ recipe.owner }}</a>
+        </p>
+
+        <hr>
+
+        <!-- Info -->
+        <p>Difficulty: {{ recipe.get_difficulty_display }} - Posted on {{ recipe.created_at }} UTC</p>
+        <form method="POST">
+          {% csrf_token %}
+        <button type="submit" class="btn btn-success" name="like">Like ({{ recipe.like }})</button>
+        </form>
+
+        <hr>
+
+        <!-- Preview Image -->
+        <img class="img-fluid rounded" src="{{STATIC_URL}}/{{recipe.image}}"alt="">
+
+        <hr>
+
+        <!-- Post Content -->
+        <p class="lead">Ingredients:</p>
+
+        <ul>
+          {% for ingredient in recipe.ingredients.all %}
+            <li>{{ ingredient }}</li>
+          {% endfor %}
+        </ul>
+
+        <hr>
+
+        <p class="lead">Description:</p>
+        <p>{{ recipe.description }}</p>
+
+        <hr>
+
+        <!-- Rate Form -->
+        <div class="card my-4">
+          <div class="card-body">
+            <form method="POST">
+              {% csrf_token %}
+              <div class="input-group col-md-4">
+                <select class="custom-select" id="inputGroupSelect04" name="rate" required>
+                  <option value="" disabled selected hidden>Choose...</option>
+                  <option value="0">Zero</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                  <option value="4">Four</option>
+                  <option value="5">Five</option>
+                </select>
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="submit">Rate</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+{% endblock content %}
